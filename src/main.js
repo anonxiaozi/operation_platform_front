@@ -7,6 +7,7 @@ import axios from 'axios'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
+Vue.prototype.remoteAddr = '10.15.101.58'
 
 new Vue({
   router,

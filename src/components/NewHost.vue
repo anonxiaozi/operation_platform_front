@@ -52,7 +52,7 @@ export default {
         },
         AddHost() {
             this.$http({
-                    url: 'http://10.15.101.58',
+                    url: 'http://' + this.remoteAddr,
                     method: 'post',
                     data: this.newHost,
                     transformRequest: [function(data) {

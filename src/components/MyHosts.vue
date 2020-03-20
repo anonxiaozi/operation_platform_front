@@ -25,9 +25,8 @@
                     </el-table-column>
                     <el-table-column fixed="right" label="操作" width="200">
                         <template slot-scope="scope">
-                            <!-- <el-button type="text" size="medium" @click="showEditHostDialog(scope.row)">编辑</el-button> -->
                             <el-tag type="warning" effect="dark" @click="showEditHostDialog(scope.row)">编辑</el-tag>&nbsp;
-                            <el-tag type="sucess" effect="dark" @click="StartSSH(scope.row.host_addr)" v-show="scope.row.host_os == 'linux'">SSH</el-tag>&nbsp;
+                            <el-tag type="sucess" effect="dark" @click="StartSSH()" v-show="scope.row.host_os == 'linux'">SSH</el-tag>&nbsp;
                             <el-tag type="info" effect="dark" @click="StartSFTP(scope.row.host_addr)" v-show="scope.row.host_os == 'linux'">SFTP</el-tag>
                         </template>
                     </el-table-column>
@@ -41,12 +40,12 @@
                 <NewHost @to-hidenAddDialog="hidenAddDialog" :newdialogFormVisible="newdialogFormVisible" :formLabelWidth="formLabelWidth" @to-refreshHost="refreshHost"></NewHost>
             </el-tab-pane>
         </el-tabs>
-        <div id="terminal"></div>
     </div>
 </template>
 <script type="text/javascript">
 import NewHost from './NewHost.vue'
 import EditHost from './EditHost.vue'
+import Terminal from './MyTerminal.vue'
 
 export default {
     data() {
@@ -57,15 +56,16 @@ export default {
             dialogFormVisible: false,
             formLabelWidth: '120px',
             newdialogFormVisible: false,
-            activeName: 'ipRecord'
+            activeName: 'ipRecord',
+            dialogTerminalVisible: false
         }
     },
     mounted() {
-        this.getHosts()
+        this.getHosts();
     },
     methods: {
         getHosts() {
-            this.$http.get('http://10.15.101.58')
+            this.$http.get('http://' + this.remoteAddr)
                 .then(resp => {
                     this.hosts = resp.data
                 })
@@ -114,10 +114,11 @@ export default {
             };
             this.activeName = tab.name
         },
-        StartSSH(host_addr) {
-            var terminal = new Terminal();
-            terminal.open(document.getElementById('#terminal'));
-            terminal.write('Hello from bloke.')
+        StartSSH() {
+            this.$router.push('/terminal')
+        },
+        hidenTerminalDialog(val) {
+            this.dialogTerminalVisible = val;
         },
         StartSFTP(host_addr) {
             window.open('winscp-sftp://root:www.fct123.com@' + host_addr)
@@ -125,7 +126,8 @@ export default {
     },
     components: {
         NewHost,
-        EditHost
+        EditHost,
+        Terminal
     }
 }
 </script>

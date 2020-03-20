@@ -45,7 +45,7 @@ export default {
     methods: {
         ChangeHost() {
             this.$http({
-                    url: 'http://10.15.101.58',
+                    url: 'http://' + this.remoteAddr,
                     method: 'post',
                     data: this.host,
                     transformRequest: [function(data) {
