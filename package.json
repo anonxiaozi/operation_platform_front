@@ -10,10 +10,14 @@
     "core-js": "^3.6.4",
     "css-loader": "^3.4.2",
     "element-ui": "^2.4.5",
+    "js-base64": "^2.5.2",
     "lodash": "^4.17.15",
     "vue": "^2.6.11",
     "vue-router": "^3.1.5",
-    "xterm": "^4.4.0"
+    "xterm": "^4.4.0",
+    "xterm-addon-fit": "^0.3.0",
+    "xterm-addon-search": "^0.5.0",
+    "xterm-addon-web-links": "^0.2.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.2.0",

@@ -26,7 +26,7 @@
                     <el-table-column fixed="right" label="操作" width="200">
                         <template slot-scope="scope">
                             <el-tag type="warning" effect="dark" @click="showEditHostDialog(scope.row)">编辑</el-tag>&nbsp;
-                            <el-tag type="sucess" effect="dark" @click="StartSSH()" v-show="scope.row.host_os == 'linux'">SSH</el-tag>&nbsp;
+                            <el-tag type="sucess" effect="dark" @click="StartSSH(scope.row.host_addr)" v-show="scope.row.host_os == 'linux'">SSH</el-tag>&nbsp;
                             <el-tag type="info" effect="dark" @click="StartSFTP(scope.row.host_addr)" v-show="scope.row.host_os == 'linux'">SFTP</el-tag>
                         </template>
                     </el-table-column>
@@ -114,8 +114,8 @@ export default {
             };
             this.activeName = tab.name
         },
-        StartSSH() {
-            this.$router.push('/terminal')
+        StartSSH(host_addr) {
+            this.$router.push('/terminal/' + host_addr)
         },
         hidenTerminalDialog(val) {
             this.dialogTerminalVisible = val;

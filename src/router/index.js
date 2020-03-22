@@ -12,15 +12,15 @@ const routes = [
     component: MyHosts
   },
   {
-    path: '/terminal',
+    path: '/terminal/:host',
     name: 'terminal',
     component: MyTerminal
   }
 ]
 
 const router = new VueRouter({
-  // mode: 'history',
-  // base: process.env.BASE_URL,
+  mode: 'history',
+  base: process.env.BASE_URL,
   routes
 })
 

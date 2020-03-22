@@ -6,7 +6,6 @@
                     <MyHeader></MyHeader>
                 </el-header>
                 <el-main>
-                    <!-- <MyHosts></MyHosts> -->
                     <router-view></router-view>
                 </el-main>
                 <el-footer>Footer</el-footer>
