@@ -1,6 +1,7 @@
 <template>
     <div class="container">
         <div ref="terminal"></div>
+        <el-button plain @click="showDialog" ref="dialog" style="display: none;"></el-button>
     </div>
 </template>
 <script>
@@ -14,10 +15,21 @@ import { AttachAddon } from 'xterm-addon-attach';
 
 export default {
     mounted() {
-        var send_data = ""
+        var windowHeight = document.body.clientHeight;
+        var width = this.$refs.terminal.offsetWidth;
+        var height = windowHeight - 150
+        var termRows = Math.floor(height / 18)
+        var termCols = Math.floor(width / 9)
         const host_addr = this.$route.params.host;
         const term = new Terminal({
-            termName: host_addr
+            cursorBlink: true,
+            cursorStyle: "block",
+            scrollback: 1024,
+            tabStopWidth: 4,
+            screenkeys: true,
+            termName: host_addr,
+            allowTransparency: true,
+            windowsMode: true,
         });
         const fitAddon = new FitAddon();
         const webLinksAddon = new WebLinksAddon();
@@ -26,47 +38,41 @@ export default {
         term.loadAddon(webLinksAddon);
         term.loadAddon(searchAddon);
         term.open(this.$refs.terminal);
-        term.write('Hello....[' + host_addr + ']');
-        const webSocket = new WebSocket('ws://10.15.101.58:80/ws/chat/first/');
-        webSocket.onopen = () => {
-            console.log('ws onopen')
-        }
-        webSocket.onmessage = event => {
-            term.writeln(event.data)
-            console.log(
-                // Base64.decode(JSON.parse(event.data))
-                event.data
-            )
-        }
-        webSocket.onclose = ce => {
-            console.log(ce)
-        };
-        const attachAddon = new AttachAddon(socket);
+        const webSocket = new WebSocket('ws://10.15.101.58/connect/' + host_addr + '/');
+        const attachAddon = new AttachAddon(webSocket);
         term.loadAddon(attachAddon);
-        // term.attachCustomKeyEventHandler(function(e) {
-        //     if (e.keyCode == 13) {
-        //         console.log('enter')
-        //         webSocket.send(
-        //             JSON.stringify({
-        //                 message: Base64.encode(send_data)
-        //             })
-        //         )
-        //         send_data = ''
-        //     }
-        // });
-        // term.onData(data => {
-        //     if (data !== "") {
-        //         term.write(data)
-        //         send_data += data
-        //     }
-        // });
-        // // bindTerminal(term, webSocket, true, 0);
+        webSocket.onopen = () => {
+            this.TermSize(term, webSocket, Math.floor((document.body.clientHeight - 150) / 18), Math.floor(this.$refs.terminal.offsetWidth / 9));
+        }
+        webSocket.onerror = () => {
+            term.write('\x1b[1;31mconnect ' + host_addr + ' failed\r\n')
+        };
+        webSocket.onclose = () => {
+            term.write('\r\n\x1b[1;31mDisconnected...\r\n');
+            this.$refs.dialog.$el.click();
+            window.onresize = null
+        };
+        window.onresize = function() {
+            this.TermSize(term, webSocket, Math.floor((document.body.clientHeight - 150) / 18), Math.floor(this.$refs.terminal.offsetWidth / 9));
+        }.bind(this)
     },
-    props: ['dialogTerminalVisible'],
     methods: {
-        hidenDialog() {
-            this.$emit('to-hidenTerminalDialog', false)
+        TermSize(term, ws, height, width) {
+            term.resize(width-2, height-2)
+            ws.send('bloke_term_resize,height=' + term.rows + 'width=' + term.cols + ';')
         },
-    }
+        showDialog() {
+            this.$notify({
+                title: 'Disconnected...',
+                message: '连接已断开 [' + this.$route.params.host + ']',
+                type: 'warning',
+                duration: 0
+            });
+        },
+        windowChange(fit, term) {
+            fit.fit();
+            term.scrollToBottom();
+        }
+    },
 }
 </script>
