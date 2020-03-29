@@ -67,7 +67,12 @@ export default {
     },
     methods: {
         getHosts() {
-            this.$http.get('http://' + this.remoteAddr)
+            // this.$http.get('http://' + this.remoteAddr)
+            this.$http({
+                    url: 'http://' + this.remoteAddr,
+                    method: 'get',
+                    withCredentials: true,
+                })
                 .then(resp => {
                     if (resp.data.status == 200) {
                         this.hosts = resp.data;
