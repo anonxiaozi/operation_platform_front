@@ -5,18 +5,18 @@
             </el-input>
             <el-button type="success" size="small" icon="el-icon-refresh" @click="getHostsAgain" style="margin-left: 10px;"></el-button>
         </div>
-        <el-table name="ipRecord" ref="multipleTable" tooltip-effect="dark" @selection-change="handleSelectionChange" :data="newHosts.slice((currentPage-1)*pageSize,currentPage*pageSize)" style="width: 100%;">
+        <el-table name="ipRecord" ref="multipleTable" tooltip-effect="dark" @selection-change="handleSelectionChange" :data="newHosts.slice((currentPage-1)*pageSize,currentPage*pageSize)" style="width: 100%;" :default-sort="{prop: 'host_createTime', order: 'descending'}">
             <el-table-column prop="host_name" label="主机名" width="150">
             </el-table-column>
-            <el-table-column prop="host_addr" label="IP地址" width="150">
+            <el-table-column prop="host_addr" label="IP地址" width="150" sortable>
             </el-table-column>
-            <el-table-column prop="host_os" label="系统平台" width="100">
+            <el-table-column prop="host_os" label="系统平台" width="100" sortable>
             </el-table-column>
             <el-table-column width="150" prop="host_spec" label="规格">
             </el-table-column>
-            <el-table-column width="220" prop="host_createTime" label="创建时间">
+            <el-table-column width="220" prop="host_createTime" label="创建时间" sortable>
             </el-table-column>
-            <el-table-column width="100" prop="physical_equipment" label="物理机？">
+            <el-table-column width="100" prop="physical_equipment" label="物理机？" sortable>
                 <template slot-scope="scope">
                     <i class="el-icon-success" v-if="scope.row.physical_equipment"></i>
                     <i class="el-icon-error" v-if="!scope.row.physical_equipment"></i>
@@ -69,10 +69,17 @@ export default {
         getHosts() {
             this.$http.get('http://' + this.remoteAddr)
                 .then(resp => {
-                    this.hosts = resp.data;
-                    this.newHosts = resp.data;
-                    this.hostSearch = '';
-                    this.$notify.close();
+                    if (resp.data.status == 200) {
+                        this.hosts = resp.data;
+                        this.newHosts = resp.data;
+                        this.hostSearch = '';
+                        this.$notify.close();
+                    } else if (resp.data.message == "未认证") {
+                        this.$router.push('/login')
+                        this.showMsg(resp.data.message, 'warning')
+                    } else {
+                        this.showMsg(resp.data.message, 'warning')
+                    }
                 })
                 .catch(err => {
                     this.$message({
@@ -82,6 +89,14 @@ export default {
                         center: true
                     });
                 })
+        },
+        showMsg(data, type) {
+            this.$message({
+                showClose: true,
+                message: data,
+                type: type,
+                center: true
+            })
         },
         getHostsAgain() {
             this.refreshHost();
@@ -109,7 +124,7 @@ export default {
         },
         showEditHostDialog(row) {
             this.dialogFormVisible = true;
-            this.host = JSON.parse(JSON.stringify(row))
+            this.host = JSON.parse(JSON.stringify(row));
         },
         hidenEditDialog(val) {
             this.dialogFormVisible = val

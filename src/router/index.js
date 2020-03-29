@@ -2,18 +2,29 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import MyTerminal from '@/components/MyTerminal.vue'
 import MyHosts from '@/components/MyHosts.vue'
+import MyLogin from '@/components/MyLogin.vue'
 
 Vue.use(VueRouter)
 
 const routes = [{
-        path: '/',
+        path: '/hosts',
         name: 'Hosts',
         component: MyHosts
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: MyLogin
     },
     {
         path: '/terminal/:host',
         name: 'terminal',
         component: MyTerminal
+    },
+    {
+        path: '',
+        name: 'index',
+        redirect: {name: 'login'}
     }
 ]
 

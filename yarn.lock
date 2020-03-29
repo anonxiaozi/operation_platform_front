@@ -1820,6 +1820,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"animate.css@npm:^3.7.2":
+  version: 3.7.2
+  resolution: "animate.css@npm:3.7.2"
+  checksum: dbb8431599342cf085b4f94bbf6888fdde406cf7b6b21c2f66ce9cdbcb5bbd0bb13f5b0f94be7cdafd4302307e72f61e0793b7a6125a94b588dcd996bc1b698d
+  languageName: node
+  linkType: hard
+
 "ansi-colors@npm:^3.0.0":
   version: 3.2.4
   resolution: "ansi-colors@npm:3.2.4"
@@ -7090,6 +7097,7 @@ fsevents@^1.2.7:
     "@vue/cli-plugin-babel": ~4.2.0
     "@vue/cli-plugin-router": ~4.2.0
     "@vue/cli-service": ~4.2.0
+    animate.css: ^3.7.2
     axios: ^0.18.0
     core-js: ^3.6.4
     css-loader: ^3.4.2

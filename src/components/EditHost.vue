@@ -5,11 +5,21 @@
                 <el-form-item label="地址" :label-width="formLabelWidth">
                     <el-input v-model="host.host_addr" autocomplete="off" disabled></el-input>
                 </el-form-item>
+                <el-form-item label="端口" :label-width="formLabelWidth">
+                    <el-input v-model="host.host_port" autocomplete="off"></el-input>
+                </el-form-item>
                 <el-form-item label="创建时间" :label-width="formLabelWidth">
                     <el-input v-model="host.host_createTime" autocomplete="off" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="主机名" :label-width="formLabelWidth">
                     <el-input v-model="host.host_name" autocomplete="off"></el-input>
+                </el-form-item>
+                </el-form-item>
+                <el-form-item label="用户名" :label-width="formLabelWidth">
+                    <el-input v-model="host.host_user" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="私钥" :label-width="formLabelWidth">
+                    <el-input v-model="host.host_key" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="系统平台" :label-width="formLabelWidth">
                     <el-radio-group v-model="host.host_os">

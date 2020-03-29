@@ -6,9 +6,11 @@
                     <MyHeader></MyHeader>
                 </el-header>
                 <el-main>
-                    <router-view></router-view>
+                    <transition enter-active-class="animated fadeInDownBig" leave-active-class="animated fadeOutUpBig">
+                        <router-view></router-view>
+                    </transition>
                 </el-main>
-                <el-footer>Footer</el-footer>
+                <!-- <el-footer>运维管理平台 @2020-03 BLOKE</el-footer> -->
             </el-container>
         </el-container>
     </div>
@@ -22,7 +24,7 @@ export default {
     components: {
         MyHosts,
         MyHeader,
-    }
+    },
 }
 </script>
 <style>

@@ -141,6 +141,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@vue/cli-plugin-babel", "virtual:0eb361795ff1d59a038f0653aa0a2ee86c6e0d4abbffdf7abea8c3910173bad9de2b0cb27a0db2ecfc90d7f44e9c6071cc529f07248ed8216ac4b3e2ab928f8e#npm:4.2.3"],
             ["@vue/cli-plugin-router", "virtual:0eb361795ff1d59a038f0653aa0a2ee86c6e0d4abbffdf7abea8c3910173bad9de2b0cb27a0db2ecfc90d7f44e9c6071cc529f07248ed8216ac4b3e2ab928f8e#npm:4.2.3"],
             ["@vue/cli-service", "virtual:0eb361795ff1d59a038f0653aa0a2ee86c6e0d4abbffdf7abea8c3910173bad9de2b0cb27a0db2ecfc90d7f44e9c6071cc529f07248ed8216ac4b3e2ab928f8e#npm:4.2.3"],
+            ["animate.css", "npm:3.7.2"],
             ["axios", "npm:0.18.1"],
             ["core-js", "npm:3.6.4"],
             ["css-loader", "virtual:0eb361795ff1d59a038f0653aa0a2ee86c6e0d4abbffdf7abea8c3910173bad9de2b0cb27a0db2ecfc90d7f44e9c6071cc529f07248ed8216ac4b3e2ab928f8e#npm:3.4.2"],
@@ -2326,6 +2327,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/alphanum-sort-npm-1.0.2-78a592b492-1.zip/node_modules/alphanum-sort/",
           "packageDependencies": [
             ["alphanum-sort", "npm:1.0.2"]
+          ],
+          "linkType": "HARD"
+        }]
+      ]],
+      ["animate.css", [
+        ["npm:3.7.2", {
+          "packageLocation": "./.yarn/cache/animate.css-npm-3.7.2-caa8db9d0e-1.zip/node_modules/animate.css/",
+          "packageDependencies": [
+            ["animate.css", "npm:3.7.2"]
           ],
           "linkType": "HARD"
         }]
@@ -8239,6 +8249,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@vue/cli-plugin-babel", "virtual:0eb361795ff1d59a038f0653aa0a2ee86c6e0d4abbffdf7abea8c3910173bad9de2b0cb27a0db2ecfc90d7f44e9c6071cc529f07248ed8216ac4b3e2ab928f8e#npm:4.2.3"],
             ["@vue/cli-plugin-router", "virtual:0eb361795ff1d59a038f0653aa0a2ee86c6e0d4abbffdf7abea8c3910173bad9de2b0cb27a0db2ecfc90d7f44e9c6071cc529f07248ed8216ac4b3e2ab928f8e#npm:4.2.3"],
             ["@vue/cli-service", "virtual:0eb361795ff1d59a038f0653aa0a2ee86c6e0d4abbffdf7abea8c3910173bad9de2b0cb27a0db2ecfc90d7f44e9c6071cc529f07248ed8216ac4b3e2ab928f8e#npm:4.2.3"],
+            ["animate.css", "npm:3.7.2"],
             ["axios", "npm:0.18.1"],
             ["core-js", "npm:3.6.4"],
             ["css-loader", "virtual:0eb361795ff1d59a038f0653aa0a2ee86c6e0d4abbffdf7abea8c3910173bad9de2b0cb27a0db2ecfc90d7f44e9c6071cc529f07248ed8216ac4b3e2ab928f8e#npm:3.4.2"],
