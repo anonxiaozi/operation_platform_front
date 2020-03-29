@@ -58,7 +58,7 @@ export default {
     },
     methods: {
         TermSize(term, ws, height, width) {
-            term.resize(width-2, height-2)
+            term.resize(width-2, height+2)
             ws.send('bloke_term_resize,height=' + term.rows + 'width=' + term.cols + ';')
         },
         showDialog() {
@@ -66,7 +66,7 @@ export default {
                 title: 'Disconnected...',
                 message: '连接已断开 [' + this.$route.params.host + ']',
                 type: 'warning',
-                duration: 0
+                duration: 30000
             });
         },
         windowChange(fit, term) {

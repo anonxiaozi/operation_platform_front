@@ -33,8 +33,7 @@
             </el-table-column>
         </el-table>
         <div class="block" style="margin-top: 20px">
-            <!-- <span class="demonstration">大于 7 页时的效果</span> -->
-            <el-pagination layout="total, sizes, prev, pager, next, jumper" :total="hosts.length" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[5, 8, 10, 12]" :page-size="pageSize">
+            <el-pagination layout="total, sizes, prev, pager, next, jumper" :total="hosts.length" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[6, 9, 11, 13]" :page-size="pageSize">
             </el-pagination>
         </div>
         <EditHost :host="host" @to-hidenEditDialog="hidenEditDialog" :dialogFormVisible="dialogFormVisible" :formLabelWidth="formLabelWidth" @to-refreshHost="refreshHost"></EditHost>
@@ -59,7 +58,7 @@ export default {
             activeName: 'ipRecord',
             dialogTerminalVisible: false,
             currentPage: 1,
-            pageSize: 8,
+            pageSize: 9,
             hostSearch: '',
         }
     },
@@ -72,7 +71,8 @@ export default {
                 .then(resp => {
                     this.hosts = resp.data;
                     this.newHosts = resp.data;
-                    this.fetchHost();
+                    this.hostSearch = '';
+                    this.$notify.close();
                 })
                 .catch(err => {
                     this.$message({
@@ -133,7 +133,11 @@ export default {
             this.activeName = tab.name
         },
         StartSSH(host_addr) {
-            this.$router.push('/terminal/' + host_addr)
+            // this.$router.push('/terminal/' + host_addr)
+            let routeUrl = this.$router.resolve({
+                path: "/terminal/" + host_addr,
+            });
+            window.open(routeUrl.href, '_blank');
         },
         hidenTerminalDialog(val) {
             this.dialogTerminalVisible = val;
