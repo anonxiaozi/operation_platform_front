@@ -10,7 +10,7 @@
                         <router-view></router-view>
                     </transition>
                 </el-main>
-                <!-- <el-footer>运维管理平台 @2020-03 BLOKE</el-footer> -->
+                <MyFooter></MyFooter>
             </el-container>
         </el-container>
     </div>
@@ -18,12 +18,14 @@
 <script>
 import MyHosts from './components/MyHosts.vue'
 import MyHeader from './components/MyHeader.vue'
+import MyFooter from './components/MyFooter.vue'
 
 export default {
     name: 'app',
     components: {
         MyHosts,
         MyHeader,
+        MyFooter
     },
 }
 </script>
@@ -37,16 +39,15 @@ body,
     height: 100%;
 }
 
-.el-header,
-.el-footer {
-    background-color: #B3C0D1;
+.el-header {
+    background-color: #E9EEF3;
     color: #333;
     text-align: center;
     line-height: normal;
 }
 
 .el-aside {
-    background-color: #D3DCE6;
+    background-color: #E9EEF3;
     color: #333;
     text-align: center;
     line-height: 200px;

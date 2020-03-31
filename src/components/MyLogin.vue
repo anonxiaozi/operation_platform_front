@@ -1,11 +1,13 @@
 <template>
-    <el-form :model="formData" ref="loginForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="用户名" prop="username">
+    <el-form :model="formData" ref="loginForm" class="demo-ruleForm" label-width='80px' label-position='left' hide-required-asterisk style="width: 500px; margin: 60px auto;">
+        <el-form-item label="用户名" prop="username" required>
             <el-input v-model="formData.username"></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="password">
-            <el-input v-model="formData.password"></el-input>
+        <br>
+        <el-form-item label="密码" prop="password" autocomplete="off" required>
+            <el-input v-model="formData.password" show-password></el-input>
         </el-form-item>
+        <br>
         <el-form-item>
             <el-button type="primary" @click="submitForm('loginForm')">登陆</el-button>
             <el-button @click="resetForm('loginForm')">重置</el-button>
@@ -14,17 +16,11 @@
 </template>
 <script>
 export default {
-    created() {
-        var token = localStorage.getItem('token');
-        if (token) {
-            this.$router.push('')
-        }
-    },
     data() {
         return {
             formData: {
-                username: 'root',
-                password: 'www.123.com',
+                username: '',
+                password: '',
             },
         };
     },
@@ -51,6 +47,7 @@ export default {
                         console.log(resp.data.token)
                         this.$cookies.set('token', resp.data.token)
                         localStorage.setItem('token', resp.data.token);
+                        localStorage.setItem('user', resp.data.user)
                         if (resp.data.status == 200) {
                             this.$message({
                                 showClose: true,

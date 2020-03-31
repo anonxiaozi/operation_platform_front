@@ -39,6 +39,20 @@ axios.interceptors.response.use(
     });
 
 Vue.prototype.$http = axios
+
+router.beforeEach((to, from, next) => {
+    if (to.path === '/login') {
+        next();
+    } else {
+        let token = localStorage.getItem('token');
+        if (token === 'null' || token === '') {
+            next('/login');
+        } else {
+            next();
+        }
+    }
+});
+
 new Vue({
     router,
     render: h => h(App)

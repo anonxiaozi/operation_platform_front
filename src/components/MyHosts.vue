@@ -88,7 +88,7 @@ export default {
                     }
                 })
                 .catch(err => {
-                    this.showMsg(err, 'failed')
+                    this.showNotify(resp.status, resp.data, 'error')
                 })
         },
         showMsg(data, type) {
@@ -99,14 +99,17 @@ export default {
                 center: true,
             })
         },
+        showNotify(title, message, type){
+            this.$notify({
+                title: title,
+                message: message,
+                type: type,
+                duration: 30000
+            })
+        },
         getHostsAgain() {
             this.refreshHost();
-            this.$message({
-                showClose: true,
-                message: '已刷新主机信息',
-                type: 'success',
-                center: true
-            });
+            this.showMsg('已刷新主机信息', 'success')
         },
         refreshHost() {
             this.getHosts();
@@ -139,12 +142,7 @@ export default {
         handleClick(tab, event) {
             if (tab.name == "ipRecord") {
                 this.getHosts();
-                this.$message({
-                    showClose: true,
-                    message: '已刷新主机信息',
-                    type: 'success',
-                    center: true
-                });
+                this.showMsg('已刷新主机信息', 'success')
             };
             this.activeName = tab.name
         },
