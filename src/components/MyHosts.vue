@@ -71,18 +71,19 @@ export default {
             this.$http({
                     url: 'http://' + this.remoteAddr,
                     method: 'get',
-                    withCredentials: true,
+                    // withCredentials: true,
                 })
                 .then(resp => {
                     if (resp.data.status == 200) {
-                        this.hosts = resp.data;
-                        this.newHosts = resp.data;
+                        this.hosts = resp.data.message;
+                        this.newHosts = resp.data.message;
                         this.hostSearch = '';
                         this.$notify.close();
                     } else if (resp.data.message == "未认证") {
                         this.$router.push('/login')
                         this.showMsg(resp.data.message, 'warning')
                     } else {
+                        console.log(resp.data)
                         this.showMsg(resp.data.message, 'warning')
                     }
                 })

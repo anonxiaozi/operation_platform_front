@@ -14,11 +14,17 @@
 </template>
 <script>
 export default {
+    created() {
+        token = localStorage.getItem('token');
+        if (token) {
+            this.$router.push('')
+        }
+    },
     data() {
         return {
             formData: {
                 username: 'root',
-                password: 'woshixiaozi4',
+                password: 'www.123.com',
             },
         };
     },
@@ -40,7 +46,11 @@ export default {
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded'
                         },
+                        withCredentials: true,
                     }).then(resp => {
+                        console.log(resp.data.token)
+                        this.$cookies.set('token', resp.data.token)
+                        localStorage.setItem('token', resp.data.token);
                         if (resp.data.status == 200) {
                             this.$message({
                                 showClose: true,
@@ -51,7 +61,7 @@ export default {
                             });
                             this.$router.push('/hosts')
                         } else {
-                        	this.$message({
+                            this.$message({
                                 showClose: true,
                                 message: resp.data.message,
                                 type: 'error',

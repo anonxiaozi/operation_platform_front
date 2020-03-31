@@ -8,7 +8,7 @@ Vue.use(VueRouter)
 
 const routes = [{
         path: '/hosts',
-        name: 'Hosts',
+        name: 'hosts',
         component: MyHosts
     },
     {
@@ -24,7 +24,7 @@ const routes = [{
     {
         path: '',
         name: 'index',
-        redirect: {name: 'login'}
+        redirect: {name: 'hosts'}
     }
 ]
 
