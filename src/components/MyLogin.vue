@@ -15,7 +15,7 @@
 <script>
 export default {
     created() {
-        token = localStorage.getItem('token');
+        var token = localStorage.getItem('token');
         if (token) {
             this.$router.push('')
         }

@@ -88,12 +88,7 @@ export default {
                     }
                 })
                 .catch(err => {
-                    this.$message({
-                        showClose: true,
-                        message: err,
-                        type: 'failed',
-                        center: true
-                    });
+                    this.showMsg(err, 'failed')
                 })
         },
         showMsg(data, type) {
@@ -101,7 +96,7 @@ export default {
                 showClose: true,
                 message: data,
                 type: type,
-                center: true
+                center: true,
             })
         },
         getHostsAgain() {
