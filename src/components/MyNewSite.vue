@@ -16,8 +16,8 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="hidenDialog">返 回</el-button>
-                <el-button type="primary" @click="AddSite">确 定</el-button>
+                <el-button @click="hidenDialog">取 消</el-button>
+                <el-button type="primary" @click="AddSite">创 建</el-button>
             </div>
         </el-dialog>
     </div>
@@ -40,6 +40,9 @@ export default {
             this.$emit('to-hidenAddDialog', false)
         },
         AddSite() {
+            if(this.newSite.site_url == ''){
+                return
+            }
             this.$http({
                     url: 'http://' + this.remoteAddr + '/sites/',
                     method: 'post',
@@ -57,8 +60,8 @@ export default {
                 })
                 .then(resp => {
                     if (resp.data.status == 200) {
-                        console.log(resp.data.site);
-                        this.$emit('to-appendSite', Vue.handleSite(resp.data.site));
+                        this.$emit('to-appendSite', this.handleSite(resp.data.site));
+                        // this.newSite = this.handleSite(resp.data.site);
                         this.$notify({
                             title: '成功',
                             message: resp.data.message,
@@ -79,12 +82,14 @@ export default {
                     this.hidenDialog();
                 })
         },
+        handleSite(val) {
+            var obj = JSON.parse(val)[0];
+            var fields = obj.fields;
+            fields['site_url'] = obj.pk;
+            console.log(fields);
+            return fields;
+        }
     },
-    handleSite(val) {
-        var obj = JSON.parse(val)[0];
-        var fields = obj.fields;
-        fields['site_url'] = obj.pk;
-        return fields;
-    }
+
 }
 </script>

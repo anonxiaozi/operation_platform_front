@@ -44,7 +44,6 @@ export default {
                         },
                         withCredentials: true,
                     }).then(resp => {
-                        console.log(resp.data.token)
                         this.$cookies.set('token', resp.data.token)
                         localStorage.setItem('token', resp.data.token);
                         localStorage.setItem('user', resp.data.user);

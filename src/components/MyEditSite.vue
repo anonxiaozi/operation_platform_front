@@ -55,7 +55,7 @@ export default {
                             message: resp.data.message,
                             type: 'success'
                         });
-                        this.newSite = this.handleSite(resp.data.site)
+                        this.$emit('to-editSite', this.handleSite(resp.data.site))
                     } else {
                         this.$notify({
                             title: '失败',
@@ -72,12 +72,11 @@ export default {
                 })
         },
         hidenDialog() {
-            this.$emit('to-hidenEditDialog', this.newSite)
+            this.$emit('to-hidenEditDialog', false)
         },
         handleSite(val){
             var obj = JSON.parse(val)[0];
             var fields = obj.fields;
-            fields['site_url'] = obj.pk;
             return fields;
         }
     }
