@@ -48,7 +48,8 @@
 export default {
     data() {
         return {
-            success: false
+            success: false,
+            newHost: {},
         }
     },
     props: ['host', 'dialogFormVisible', 'formLabelWidth'],
@@ -71,12 +72,12 @@ export default {
                 })
                 .then(resp => {
                     if (resp.data.status == 200) {
-                        this.$emit('to-refreshHost', true);
                         this.$notify({
                             title: '成功',
                             message: this.host.host_addr + ' 主机信息修改成功',
                             type: 'success'
                         });
+                        this.newHost = this.handleHost(resp.data.message)
                     } else {
                         this.$notify({
                             title: '失败',
@@ -93,8 +94,14 @@ export default {
                 })
         },
         hidenDialog() {
-            this.$emit('to-hidenEditDialog', false)
+            this.$emit('to-hidenEditDialog', this.newHost)
         },
+        handleHost(val){
+            var obj = JSON.parse(val)[0];
+            var fields = obj.fields;
+            fields['host_addr'] = obj.pk;
+            return fields;
+        }
     }
 }
 </script>

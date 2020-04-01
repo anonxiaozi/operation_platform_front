@@ -26,7 +26,7 @@
             </el-table-column>
             <el-table-column fixed="right" label="操作" width="200">
                 <template slot-scope="scope">
-                    <el-tag type="warning" effect="dark" @click="showEditHostDialog(scope.row)">编辑</el-tag>&nbsp;
+                    <el-tag type="warning" effect="dark" @click="showEditHostDialog(scope.row, scope.$index)">编辑</el-tag>&nbsp;
                     <el-tag type="sucess" effect="dark" @click="StartSSH(scope.row.host_addr)" v-show="scope.row.host_os == 'linux'">SSH</el-tag>&nbsp;
                     <el-tag type="info" effect="dark" @click="StartSFTP(scope.row.host_addr)" v-show="scope.row.host_os == 'linux'">SFTP</el-tag>
                 </template>
@@ -36,7 +36,7 @@
             <el-pagination layout="total, sizes, prev, pager, next, jumper" :total="hosts.length" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[6, 9, 11, 13]" :page-size="pageSize">
             </el-pagination>
         </div>
-        <EditHost :host="host" @to-hidenEditDialog="hidenEditDialog" :dialogFormVisible="dialogFormVisible" :formLabelWidth="formLabelWidth" @to-refreshHost="refreshHost"></EditHost>
+        <EditHost :host="host" @to-hidenEditDialog="hidenEditDialog" :dialogFormVisible="dialogFormVisible" :formLabelWidth="formLabelWidth"></EditHost>
         <NewHost @to-hidenAddDialog="hidenAddDialog" :newdialogFormVisible="newdialogFormVisible" :formLabelWidth="formLabelWidth" @to-refreshHost="refreshHost"></NewHost>
     </div>
 </template>
@@ -52,6 +52,7 @@ export default {
             newHosts: [],
             multipleSelection: [],
             host: {},
+            idx: 0,
             dialogFormVisible: false,
             formLabelWidth: '120px',
             newdialogFormVisible: false,
@@ -77,9 +78,6 @@ export default {
                         this.newHosts = resp.data.message;
                         this.hostSearch = '';
                         this.$notify.close();
-                    } else if (resp.data.message == "未认证") {
-                        this.$router.push('/login')
-                        this.showMsg(resp.data.message, 'warning')
                     } else {
                         console.log(resp.data)
                         this.showMsg(resp.data.message, 'warning')
@@ -97,7 +95,7 @@ export default {
                 center: true,
             })
         },
-        showNotify(title, message, type){
+        showNotify(title, message, type) {
             this.$notify({
                 title: title,
                 message: message,
@@ -106,10 +104,10 @@ export default {
             })
         },
         getHostsAgain() {
-            this.refreshHost();
+            this.getHosts();
             this.showMsg('已刷新主机信息', 'success')
         },
-        refreshHost() {
+        refreshHost(val) {
             this.getHosts();
         },
         toggleSelection(rows) {
@@ -124,12 +122,17 @@ export default {
         handleSelectionChange(val) {
             this.multipleSelection = val
         },
-        showEditHostDialog(row) {
+        showEditHostDialog(row, idx) {
             this.dialogFormVisible = true;
+            this.idx = idx;
             this.host = JSON.parse(JSON.stringify(row));
         },
         hidenEditDialog(val) {
-            this.dialogFormVisible = val
+            if (val.host_addr) {
+                this.hosts.splice(this.idx, 1, val);
+                this.newHosts.splice(this.idx, 1, val);
+            }
+            this.dialogFormVisible = false
         },
         showAddHostDialog() {
             this.newdialogFormVisible = true;
@@ -145,7 +148,6 @@ export default {
             this.activeName = tab.name
         },
         StartSSH(host_addr) {
-            // this.$router.push('/terminal/' + host_addr)
             let routeUrl = this.$router.resolve({
                 path: "/terminal/" + host_addr,
             });
@@ -168,6 +170,7 @@ export default {
             this.currentPage = 1;
             this.newHosts = this.hosts;
             this.newHosts.map(host => {
+                console.log(hosts)
                 if (host.host_name.search(val) != -1 || (host.host_addr.search(val) != -1) || (host.host_os.search(val) != -1)) {
                     hostList.push(host)
                 }

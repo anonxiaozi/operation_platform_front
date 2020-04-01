@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import MyTerminal from '@/components/MyTerminal.vue'
 import MyHosts from '@/components/MyHosts.vue'
 import MyLogin from '@/components/MyLogin.vue'
+import MySites from '@/components/MySites.vue'
 
 Vue.use(VueRouter)
 
@@ -20,6 +21,11 @@ const routes = [{
         path: '/terminal/:host',
         name: 'terminal',
         component: MyTerminal
+    },
+    {
+        path: '/sites',
+        name: 'sites',
+        component: MySites
     },
     {
         path: '',

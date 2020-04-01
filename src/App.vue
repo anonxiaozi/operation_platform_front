@@ -16,14 +16,12 @@
     </div>
 </template>
 <script>
-import MyHosts from './components/MyHosts.vue'
 import MyHeader from './components/MyHeader.vue'
 import MyFooter from './components/MyFooter.vue'
 
 export default {
     name: 'app',
     components: {
-        MyHosts,
         MyHeader,
         MyFooter
     },
