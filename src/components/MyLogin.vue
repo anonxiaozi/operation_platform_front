@@ -1,5 +1,5 @@
 <template>
-    <el-form :model="formData" ref="loginForm" class="demo-ruleForm" label-width='80px' label-position='left' hide-required-asterisk style="width: 500px; margin: 60px auto;">
+    <el-form :model="formData" ref="loginForm" class="demo-ruleForm" label-width='80px' @submit.native.prevent label-position='left' hide-required-asterisk style="width: 500px; margin: 60px auto;">
         <el-form-item label="用户名" prop="username" required>
             <el-input v-model="formData.username"></el-input>
         </el-form-item>
@@ -9,7 +9,7 @@
         </el-form-item>
         <br>
         <el-form-item>
-            <el-button type="primary" @click="submitForm('loginForm')">登陆</el-button>
+            <el-button type="primary" native-type="submit" @click="submitForm('loginForm')">登陆</el-button>
             <el-button @click="resetForm('loginForm')">重置</el-button>
         </el-form-item>
     </el-form>
@@ -47,7 +47,7 @@ export default {
                         console.log(resp.data.token)
                         this.$cookies.set('token', resp.data.token)
                         localStorage.setItem('token', resp.data.token);
-                        localStorage.setItem('user', resp.data.user)
+                        localStorage.setItem('user', resp.data.user);
                         if (resp.data.status == 200) {
                             this.$message({
                                 showClose: true,
