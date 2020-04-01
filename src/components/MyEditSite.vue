@@ -1,23 +1,23 @@
 <template>
     <div>
-        <el-dialog title="网站信息" :visible.sync="newdialogFormVisible" center :before-close="hidenDialog">
-            <el-form :model="newSite">
+        <el-dialog title="网站信息" :visible.sync="dialogFormVisible" center :before-close="hidenDialog">
+            <el-form :model="site">
+                <el-form-item label="网站地址" :label-width="formLabelWidth">
+                    <el-input v-model="site.site_url" disabled></el-input>
+                </el-form-item>
                 <el-form-item label="网站名称" :label-width="formLabelWidth">
-                    <el-input v-model="newSite.site_name"></el-input>
+                    <el-input v-model="site.site_name"></el-input>
                 </el-form-item>
-                <el-form-item label="网站URL" :label-width="formLabelWidth">
-                    <el-input v-model="newSite.site_url"></el-input>
-                </el-form-item>
-                <el-form-item label="网站标签 (逗号分隔)" :label-width="formLabelWidth">
-                    <el-input v-model="newSite.site_tags"></el-input>
+                <el-form-item label="网站标签" :label-width="formLabelWidth">
+                    <el-input v-model="site.site_tags"></el-input>
                 </el-form-item>
                 <el-form-item label="网站描述" :label-width="formLabelWidth">
-                    <el-input v-model="newSite.site_remarks" type="textarea"></el-input>
+                    <el-input v-model="site.site_remarks" type="textarea"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="hidenDialog">返 回</el-button>
-                <el-button type="primary" @click="AddSite">确 定</el-button>
+                <el-button type="primary" @click="ChangeHost">保 存</el-button>
             </div>
         </el-dialog>
     </div>
@@ -26,26 +26,19 @@
 export default {
     data() {
         return {
-            newSite: {
-                'site_name': '',
-                'site_url': '',
-                'site_tags': '',
-                'site_remarks': ''
-            },
+            success: false,
+            newSite: {},
         }
     },
-    props: ['newdialogFormVisible', 'formLabelWidth'],
+    props: ['site', 'dialogFormVisible', 'formLabelWidth'],
     methods: {
-        hidenDialog() {
-            this.$emit('to-hidenAddDialog', false)
-        },
-        AddSite() {
+        ChangeHost() {
             this.$http({
                     url: 'http://' + this.remoteAddr + '/sites/',
                     method: 'post',
-                    data: this.newSite,
+                    data: this.site,
                     transformRequest: [function(data) {
-                        let result = 'action=add&';
+                        let result = 'action=edit&';
                         for (let item in data) {
                             result += encodeURIComponent(item) + '=' + encodeURIComponent(data[item]) + '&'
                         }
@@ -57,18 +50,17 @@ export default {
                 })
                 .then(resp => {
                     if (resp.data.status == 200) {
-                        console.log(resp.data.site);
-                        this.$emit('to-appendSite', Vue.handleSite(resp.data.site));
                         this.$notify({
                             title: '成功',
                             message: resp.data.message,
                             type: 'success'
                         });
+                        this.newSite = this.handleSite(resp.data.site)
                     } else {
-                        this.$notify.error({
+                        this.$notify({
                             title: '失败',
                             message: resp.data.message,
-                            type: 'failed'
+                            type: 'error'
                         });
                     }
                 })
@@ -79,12 +71,15 @@ export default {
                     this.hidenDialog();
                 })
         },
-    },
-    handleSite(val) {
-        var obj = JSON.parse(val)[0];
-        var fields = obj.fields;
-        fields['site_url'] = obj.pk;
-        return fields;
+        hidenDialog() {
+            this.$emit('to-hidenEditDialog', this.newSite)
+        },
+        handleSite(val){
+            var obj = JSON.parse(val)[0];
+            var fields = obj.fields;
+            fields['site_url'] = obj.pk;
+            return fields;
+        }
     }
 }
 </script>

@@ -74,14 +74,14 @@ export default {
                     if (resp.data.status == 200) {
                         this.$notify({
                             title: '成功',
-                            message: this.host.host_addr + ' 主机信息修改成功',
+                            message: resp.data.message,
                             type: 'success'
                         });
-                        this.newHost = this.handleHost(resp.data.message)
+                        this.newHost = this.handleHost(resp.data.host)
                     } else {
                         this.$notify({
                             title: '失败',
-                            message: resp.data.data,
+                            message: resp.data.message,
                             type: 'error'
                         });
                     }

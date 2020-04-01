@@ -1,10 +1,10 @@
 <template>
     <div>
-        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" background-color="#3b8e49" text-color="#fff" active-text-color="#ffd04b">
-            <el-menu-item v-if="this.$route.path != '/login'" index="1" @click="GoHosts">主机记录</el-menu-item>
-            <el-menu-item v-if="this.$route.path != '/login'" index="2" @click="GoSites">网站记录</el-menu-item>
-            <el-menu-item v-if="this.$route.path == '/login'" index="1">请先登录</el-menu-item>
-            <el-submenu v-if="this.$route.path != '/login'" index="10" ref="userTag" style="float: right; width: auto;">
+        <el-menu :default-active="activeTab" class="el-menu-demo" mode="horizontal" background-color="#3b8e49" text-color="#fff" active-text-color="#ffd04b">
+            <el-menu-item v-if="isLogin()" index="hosts" @click="GoHosts">主机记录</el-menu-item>
+            <el-menu-item v-if="isLogin()" index="sites" @click="GoSites">网站记录</el-menu-item>
+            <el-menu-item v-if="this.$route.path == '/login'" index="login">请先登录</el-menu-item>
+            <el-submenu v-if="isLogin()" index="10" ref="userTag" style="float: right; width: auto;">
                 <template slot="title">{{user}}</template>
                 <el-menu-item @click="logout">退出登录</el-menu-item>
             </el-submenu>
@@ -13,15 +13,13 @@
 </template>
 <script>
 export default {
-    mounted() {
-        console.log()
-
+    created(){
+        this.activeTab = this.$route.path.substr(1)
     },
     data() {
         return {
-            activeIndex: '1',
-            activeIndex2: '1',
-            user: localStorage.getItem('user')
+            user: localStorage.getItem('user'),
+            activeTab: 'hosts'
         };
     },
     methods: {
@@ -50,8 +48,11 @@ export default {
             }).catch(resp => {
                 console.log(resp.data)
             })
-        }
-    }
+        },
+        isLogin() {
+            return this.$route.path != '/login';
+        },
+    },
 }
 </script>
 <style>
