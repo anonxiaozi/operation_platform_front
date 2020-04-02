@@ -5,33 +5,37 @@
             </el-input>
             <el-button type="success" size="small" icon="el-icon-refresh" @click="getHostsAgain" style="margin-left: 10px;"></el-button>
         </div>
-        <el-table name="ipRecord" ref="multipleTable" tooltip-effect="dark" @selection-change="handleSelectionChange" :data="newHosts.slice((currentPage-1)*pageSize,currentPage*pageSize)" style="width: 100%;" :default-sort="{prop: 'host_createTime', order: 'descending'}">
-            <el-table-column prop="host_name" label="主机名" width="150">
-            </el-table-column>
-            <el-table-column prop="host_addr" label="IP地址" width="150" sortable>
-            </el-table-column>
-            <el-table-column prop="host_os" label="系统平台" width="100" sortable>
-            </el-table-column>
-            <el-table-column width="150" prop="host_spec" label="规格">
-            </el-table-column>
-            <el-table-column width="220" prop="host_createTime" label="创建时间" sortable>
-            </el-table-column>
-            <el-table-column width="100" prop="physical_equipment" label="物理机？" sortable>
-                <template slot-scope="scope">
-                    <i class="el-icon-success" v-if="scope.row.physical_equipment"></i>
-                    <i class="el-icon-error" v-if="!scope.row.physical_equipment"></i>
-                </template>
-            </el-table-column>
-            <el-table-column prop="host_remarks" label="备注">
-            </el-table-column>
-            <el-table-column fixed="right" label="操作" width="200">
-                <template slot-scope="scope">
-                    <el-tag type="warning" effect="dark" @click="showEditHostDialog(scope.row, scope.$index)">编辑</el-tag>&nbsp;
-                    <el-tag type="sucess" effect="dark" @click="StartSSH(scope.row.host_addr)" v-show="scope.row.host_os == 'linux'">SSH</el-tag>&nbsp;
-                    <el-tag type="info" effect="dark" @click="StartSFTP(scope.row.host_addr)" v-show="scope.row.host_os == 'linux'">SFTP</el-tag>
-                </template>
-            </el-table-column>
-        </el-table>
+        <el-row>
+            <el-col :span="22" :offset="1">
+                <el-table name="ipRecord" ref="multipleTable" tooltip-effect="dark" @selection-change="handleSelectionChange" :data="newHosts.slice((currentPage-1)*pageSize,currentPage*pageSize)" style="width: 100%;" :default-sort="{prop: 'host_createTime', order: 'descending'}">
+                    <el-table-column prop="host_name" label="主机名" width="150">
+                    </el-table-column>
+                    <el-table-column prop="host_addr" label="IP地址" width="150" sortable>
+                    </el-table-column>
+                    <el-table-column prop="host_os" label="系统平台" width="100" sortable>
+                    </el-table-column>
+                    <el-table-column width="150" prop="host_spec" label="规格">
+                    </el-table-column>
+                    <el-table-column width="220" prop="host_createTime" label="创建时间" sortable>
+                    </el-table-column>
+                    <el-table-column width="100" prop="physical_equipment" label="物理机？" sortable>
+                        <template slot-scope="scope">
+                            <i class="el-icon-success" v-if="scope.row.physical_equipment"></i>
+                            <i class="el-icon-error" v-if="!scope.row.physical_equipment"></i>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="host_remarks" label="备注">
+                    </el-table-column>
+                    <el-table-column fixed="right" label="操作" width="200">
+                        <template slot-scope="scope">
+                            <el-tag type="warning" effect="dark" @click="showEditHostDialog(scope.row, scope.$index)">编辑</el-tag>&nbsp;
+                            <el-tag type="sucess" effect="dark" @click="StartSSH(scope.row.host_addr)" v-show="scope.row.host_os == 'linux'">SSH</el-tag>&nbsp;
+                            <el-tag type="info" effect="dark" @click="StartSFTP(scope.row.host_addr)" v-show="scope.row.host_os == 'linux'">SFTP</el-tag>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-col>
+        </el-row>
         <div class="block" style="margin-top: 20px">
             <el-pagination layout="total, sizes, prev, pager, next, jumper" :total="hosts.length" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[6, 9, 11, 13]" :page-size="pageSize">
             </el-pagination>

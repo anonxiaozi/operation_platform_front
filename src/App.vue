@@ -6,7 +6,7 @@
                     <MyHeader></MyHeader>
                 </el-header>
                 <el-main>
-                    <transition enter-active-class="animated fadeInDownBig" leave-active-class="animated fadeOutUpBig">
+                    <transition enter-active-class="animated fadeIn">
                         <router-view></router-view>
                     </transition>
                 </el-main>

@@ -26,12 +26,7 @@
 export default {
     data() {
         return {
-            newSite: {
-                'site_name': '',
-                'site_url': '',
-                'site_tags': '',
-                'site_remarks': ''
-            },
+            newSite: {},
         }
     },
     props: ['newdialogFormVisible', 'formLabelWidth'],
@@ -61,7 +56,7 @@ export default {
                 .then(resp => {
                     if (resp.data.status == 200) {
                         this.$emit('to-appendSite', this.handleSite(resp.data.site));
-                        // this.newSite = this.handleSite(resp.data.site);
+                        this.newSite = {};
                         this.$notify({
                             title: '成功',
                             message: resp.data.message,
@@ -85,7 +80,6 @@ export default {
         handleSite(val) {
             var obj = JSON.parse(val)[0];
             var fields = obj.fields;
-            fields['site_url'] = obj.pk;
             console.log(fields);
             return fields;
         }
