@@ -14,14 +14,15 @@
                     </el-table-column>
                     <el-table-column prop="site_tags" label="site_tags" width="250">
                         <template slot-scope="scope">
-                            <el-tag :type="tagType(tag)" v-for="tag in splitTags(scope.row.site_tags)" style="margin-right:3px;">{{tag}}</el-tag>
+                            <el-tag :type="tagType(tag)" v-for="tag,idx in splitTags(scope.row.site_tags)" :key="idx" style="margin-right:3px;">{{tag}}</el-tag>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="site_remarks" label="site_remarks" width="300">
+                    <el-table-column prop="site_remarks" label="site_remarks">
                     </el-table-column>
-                    <el-table-column fixed="right" label="操作" width="80">
+                    <el-table-column fixed="right" label="操作" width="180">
                         <template slot-scope="scope">
-                            <el-tag type="warning" effect="dark" @click="showEditHostDialog(scope.row, scope.$index)">编辑</el-tag>
+                            <el-tag type="warning" effect="dark" @click="showEditSiteDialog(scope.row, scope.$index)">编辑</el-tag>&nbsp;
+                            <el-tag type="error" effect="dark" @click="showDelSiteDialog(scope.row, scope.$index)">删除</el-tag>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -33,11 +34,13 @@
         </el-row>
         <MyNewSite @to-hidenAddDialog="hidenAddDialog" :newdialogFormVisible="newdialogFormVisible" :formLabelWidth="formLabelWidth" @to-appendSite="appendSite"></MyNewSite>
         <MyEditSite :site="site" @to-hidenEditDialog="hidenEditDialog" :dialogFormVisible="dialogFormVisible" :formLabelWidth="formLabelWidth" @to-editSite="editSite"></MyEditSite>
+        <MyDelSite :site="site" @to-hidenDelDialog="hidenDelDialog" :DeldialogFormVisible="DeldialogFormVisible" :formLabelWidth="formLabelWidth" @to-delSite="delSite"></MyDelSite>
     </div>
 </template>
 <script>
 import MyNewSite from './MyNewSite.vue'
 import MyEditSite from './MyEditSite.vue'
+import MyDelSite from './MyDelSite.vue'
 
 export default {
     mounted() {
@@ -49,6 +52,7 @@ export default {
             newdialogFormVisible: false,
             formLabelWidth: '150px',
             dialogFormVisible: false,
+            DeldialogFormVisible: false,
             idx: 0,
             site: {}
         }
@@ -101,7 +105,7 @@ export default {
         appendSite(val) {
             this.sitesData.push(val);
         },
-        showEditHostDialog(row, idx) {
+        showEditSiteDialog(row, idx) {
             this.idx = idx;
             this.site = JSON.parse(JSON.stringify(row));
             this.dialogFormVisible = true;
@@ -126,11 +130,23 @@ export default {
         },
         toLinke(url){
             window.open(url);
+        },
+        showDelSiteDialog(row, idx){
+            this.site = row;
+            this.idx = idx;
+            this.DeldialogFormVisible = true;
+        },
+        hidenDelDialog(val){
+            this.DeldialogFormVisible = false;
+        },
+        delSite(val){
+            this.sitesData.splice(this.idx, 1);
         }
     },
     components: {
         MyNewSite,
         MyEditSite,
+        MyDelSite,
     }
 }
 </script>
