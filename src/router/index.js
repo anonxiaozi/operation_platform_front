@@ -4,6 +4,7 @@ import MyTerminal from '@/components/MyTerminal.vue'
 import MyHosts from '@/components/MyHosts.vue'
 import MyLogin from '@/components/MyLogin.vue'
 import MySites from '@/components/MySites.vue'
+import MyExternal from '@/components/MyExternal.vue'
 
 Vue.use(VueRouter)
 
@@ -26,6 +27,11 @@ const routes = [{
         path: '/sites',
         name: 'sites',
         component: MySites
+    },
+    {
+        path: '/external',
+        name: 'external',
+        component: MyExternal
     },
     {
         path: '',

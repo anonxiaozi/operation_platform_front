@@ -2,7 +2,8 @@
     <div>
         <el-menu :default-active="activeTab" class="el-menu-demo" mode="horizontal" background-color="#3b8e49" text-color="#fff" active-text-color="#ffd04b">
             <el-menu-item v-if="isLogin()" index="hosts" @click="GoHosts">主机记录</el-menu-item>
-            <el-menu-item v-if="isLogin()" index="sites" @click="GoSites">网站记录</el-menu-item>
+            <el-menu-item v-if="isLogin()" index="sites" @click="GoSites">公司网站</el-menu-item>
+            <el-menu-item v-if="isLogin()" index="external" @click="GoExternal">外部链接</el-menu-item>
             <el-menu-item v-if="this.$route.path == '/login'" index="login">请先登录</el-menu-item>
             <el-submenu v-if="isLogin()" index="10" ref="userTag" style="float: right; width: auto;">
                 <template slot="title">{{user}}</template>
@@ -13,7 +14,7 @@
 </template>
 <script>
 export default {
-    created(){
+    created() {
         this.activeTab = this.$route.path.substr(1)
     },
     data() {
@@ -28,6 +29,9 @@ export default {
         },
         GoSites() {
             this.$router.push('/sites').catch(err => { err })
+        },
+        GoExternal() {
+            this.$router.push('/external').catch(err => { err })
         },
         logout() {
             this.$http({
