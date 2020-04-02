@@ -8,13 +8,25 @@
         <el-row>
             <el-col :span="22" :offset="1">
                 <el-table name="ipRecord" ref="multipleTable" tooltip-effect="dark" @selection-change="handleSelectionChange" :data="newHosts.slice((currentPage-1)*pageSize,currentPage*pageSize)" style="width: 100%;" :default-sort="{prop: 'host_createTime', order: 'descending'}">
-                    <el-table-column prop="host_name" label="主机名" width="150">
+                    <el-table-column prop="host_name" label="主机名" width="200">
                     </el-table-column>
                     <el-table-column prop="host_addr" label="IP地址" width="150" sortable>
                     </el-table-column>
-                    <el-table-column prop="host_os" label="系统平台" width="100" sortable>
+                    <el-table-column prop="host_user" label="用户名" width="80">
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.host_os == 'linux'">{{scope.row.host_user}}</span>
+                            <span v-else>-</span>
+                        </template>
                     </el-table-column>
-                    <el-table-column width="150" prop="host_spec" label="规格">
+                    <el-table-column prop="host_port" label="端口" width="80">
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.host_os == 'linux'">{{scope.row.host_port}}</span>
+                            <span v-else>-</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="host_os" label="系统" width="80" sortable>
+                    </el-table-column>
+                    <el-table-column width="100" prop="host_spec" label="规格">
                     </el-table-column>
                     <el-table-column width="220" prop="host_createTime" label="创建时间" sortable>
                     </el-table-column>
@@ -174,7 +186,6 @@ export default {
             this.currentPage = 1;
             this.newHosts = this.hosts;
             this.newHosts.map(host => {
-                console.log(hosts)
                 if (host.host_name.search(val) != -1 || (host.host_addr.search(val) != -1) || (host.host_os.search(val) != -1)) {
                     hostList.push(host)
                 }
