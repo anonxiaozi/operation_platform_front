@@ -3,21 +3,21 @@
         <el-row>
             <el-col :span="18" :offset="2">
                 <el-table ref="sitesData" :data="sitesData">
-                    <el-table-column prop="site_name" label="site_name" sortable width="180">
+                    <el-table-column prop="site_name" label="名称" sortable width="180">
                     </el-table-column>
-                    <el-table-column prop="site_url" label="site_url" width="260">
+                    <el-table-column prop="site_url" label="地址" width="260">
                         <template slot-scope="scope">
                             <el-tag style="color: green" @click="toLinke(scope.row.site_url)">
                                     {{scope.row.site_url}}
                             </el-tag>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="site_tags" label="site_tags" width="250">
+                    <el-table-column prop="site_tags" label="标签" width="250">
                         <template slot-scope="scope">
                             <el-tag :type="tagType(tag)" v-for="tag,idx in splitTags(scope.row.site_tags)" :key="idx" style="margin-right:3px;">{{tag}}</el-tag>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="site_remarks" label="site_remarks">
+                    <el-table-column prop="site_remarks" label="描述">
                     </el-table-column>
                     <el-table-column fixed="right" label="操作" width="180">
                         <template slot-scope="scope">
