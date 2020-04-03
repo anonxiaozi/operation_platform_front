@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-row>
-            <el-col :span="20" :offset="1">
+            <el-col :span="18" :offset="2">
                 <el-table ref="sitesData" :data="sitesData">
                     <el-table-column prop="site_name" label="site_name" sortable width="180">
                     </el-table-column>

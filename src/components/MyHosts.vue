@@ -42,7 +42,7 @@
                         <template slot-scope="scope">
                             <el-tag type="warning" effect="dark" @click="showEditHostDialog(scope.row, scope.$index)">编辑</el-tag>&nbsp;
                             <el-tag type="sucess" effect="dark" @click="StartSSH(scope.row.host_addr)" v-show="scope.row.host_os == 'linux'">SSH</el-tag>&nbsp;
-                            <el-tag type="info" effect="dark" @click="StartSFTP(scope.row.host_addr)" v-show="scope.row.host_os == 'linux'">SFTP</el-tag>
+                            <el-tag type="info" effect="dark" @click="StartSFTP(scope.row)" v-show="scope.row.host_os == 'linux'">SFTP</el-tag>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -93,7 +93,7 @@ export default {
                         this.hosts = resp.data.message;
                         this.newHosts = resp.data.message;
                         this.hostSearch = '';
-                        this.$notify.close();
+                        this.showMsg('数据已刷新', 'success')
                     } else {
                         console.log(resp.data)
                         this.showMsg(resp.data.message, 'warning')
@@ -172,8 +172,9 @@ export default {
         hidenTerminalDialog(val) {
             this.dialogTerminalVisible = val;
         },
-        StartSFTP(host_addr) {
-            window.open('winscp-sftp://root:www.fct123.com@' + host_addr)
+        StartSFTP(host) {
+            var link = 'winscp-sftp://root@' + host.host_addr + ":" + host.host_port
+            window.open(link)
         },
         handleSizeChange: function(size) {
             this.pageSize = size;

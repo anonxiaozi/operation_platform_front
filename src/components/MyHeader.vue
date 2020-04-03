@@ -5,6 +5,10 @@
             <el-menu-item v-if="isLogin()" index="sites" @click="GoSites">公司网站</el-menu-item>
             <el-menu-item v-if="isLogin()" index="external" @click="GoExternal">外部链接</el-menu-item>
             <el-menu-item v-if="this.$route.path == '/login'" index="login">请先登录</el-menu-item>
+            <el-menu-item v-if="ip_addr">
+                <span style="color: white;">远程服务器：</span>
+                <span style="color: black;font-size: larger;font-weight: 800;">{{ip_addr}}</span>
+            </el-menu-item>
             <el-submenu v-if="isLogin()" index="10" ref="userTag" style="float: right; width: auto;">
                 <template slot="title">{{user}}</template>
                 <el-menu-item @click="logout">退出登录</el-menu-item>
@@ -15,12 +19,16 @@
 <script>
 export default {
     created() {
-        this.activeTab = this.$route.path.substr(1)
+        this.activeTab = this.$route.path.substr(1);
+        if (this.$route.path.substr(1, 8) == 'terminal') {
+            this.ip_addr = this.$route.path.substr(10)
+        }
     },
     data() {
         return {
             user: localStorage.getItem('user'),
-            activeTab: 'hosts'
+            activeTab: 'hosts',
+            ip_addr: ''
         };
     },
     methods: {
@@ -54,7 +62,13 @@ export default {
             })
         },
         isLogin() {
-            return this.$route.path != '/login';
+            if (this.$route.path.substr(1, 8) == 'terminal') {
+                return false
+            } else if (this.$route.path == '/login') {
+                return false
+            } else {
+                return true
+            }
         },
     },
 }
