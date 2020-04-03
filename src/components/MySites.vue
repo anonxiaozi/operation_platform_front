@@ -8,7 +8,7 @@
                     <el-table-column prop="site_url" label="地址" width="260">
                         <template slot-scope="scope">
                             <el-tag style="color: green" @click="toLinke(scope.row.site_url)">
-                                    {{scope.row.site_url}}
+                                {{scope.row.site_url}}
                             </el-tag>
                         </template>
                     </el-table-column>
@@ -19,10 +19,12 @@
                     </el-table-column>
                     <el-table-column prop="site_remarks" label="描述">
                     </el-table-column>
-                    <el-table-column fixed="right" label="操作" width="180">
+                    <el-table-column fixed="right" label="操作" width="200">
                         <template slot-scope="scope">
                             <el-tag type="warning" effect="dark" @click="showEditSiteDialog(scope.row, scope.$index)">编辑</el-tag>&nbsp;
-                            <el-tag type="error" effect="dark" @click="showDelSiteDialog(scope.row, scope.$index)">删除</el-tag>
+                            <el-tag type="error" effect="dark" @click="showDelSiteDialog(scope.row, scope.$index)">删除</el-tag>&nbsp;
+                            <el-tag type="success" effect="dark" v-if="scope.row.auth !== ''" @click="showAuthDialog(scope.row)">Auth</el-tag>
+                            </el-tag>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -34,6 +36,18 @@
                 <el-button type="success" icon="el-icon-plus" circle @click="addSite"></el-button>
             </el-col>
         </el-row>
+        <el-dialog :title="the_site.site_name + ' 的登录信息'" :visible.sync="AuthdialogFormVisible" center :before-close="hidenAuthDialog" width="30%">
+            <el-form @submit.native.prevent>
+                <el-form-item label="请输入口令" label-width="90px">
+                    <el-input v-model="phrase" autocomplete="off" required show-password autofocus @keyup.enter.native="getAuth"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="hidenAuthDialog">返 回</el-button>
+                <el-button type="primary" @click="getAuth">获 取</el-button>
+            </div>
+            <p style="text-align: center; color: green" v-if="auth"><span style="font-size: larger;color: black;">登录信息为： </span>{{auth}}</p>
+        </el-dialog>
         <MyNewSite @to-hidenAddDialog="hidenAddDialog" :newdialogFormVisible="newdialogFormVisible" :formLabelWidth="formLabelWidth" @to-appendSite="appendSite"></MyNewSite>
         <MyEditSite :site="site" @to-hidenEditDialog="hidenEditDialog" :dialogFormVisible="dialogFormVisible" :formLabelWidth="formLabelWidth" @to-editSite="editSite"></MyEditSite>
         <MyDelSite :site="site" @to-hidenDelDialog="hidenDelDialog" :DeldialogFormVisible="DeldialogFormVisible" :formLabelWidth="formLabelWidth" @to-delSite="delSite"></MyDelSite>
@@ -55,8 +69,12 @@ export default {
             formLabelWidth: '150px',
             dialogFormVisible: false,
             DeldialogFormVisible: false,
+            AuthdialogFormVisible: false,
             idx: 0,
-            site: {}
+            site: {},
+            auth: '',
+            the_site: {},
+            phrase: ''
         }
     },
     methods: {
@@ -68,7 +86,7 @@ export default {
                 .then(resp => {
                     if (resp.data.status == 200) {
                         this.sitesData = resp.data.message;
-                        this.showMsg('数据已刷新', 'success')
+                        this.showMsg('数据已刷新', 'success');
                     } else {
                         console.log(resp.data)
                         this.showMsg(resp.data.message, 'warning')
@@ -76,6 +94,33 @@ export default {
                 })
                 .catch(err => {
                     this.showNotify(resp.status, resp.data, 'error')
+                })
+        },
+        getAuth() {
+            this.$http({
+                    url: 'http://' + this.remoteAddr + '/sites/',
+                    method: 'post',
+                    data: { 'site_url': this.the_site.site_url, 'phrase': this.phrase },
+                    transformRequest: [function(data) {
+                        let result = 'action=auth&';
+                        for (let item in data) {
+                            result += encodeURIComponent(item) + '=' + encodeURIComponent(data[item]) + '&'
+                        }
+                        return result;
+                    }],
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                })
+                .then(resp => {
+                    if (resp.data.status == 200) {
+                        this.auth = resp.data.auth;
+                    } else {
+                        this.showMsg(resp.data.message, 'warning')
+                    }
+                })
+                .catch(err => {
+                    this.showNotify(err.status, err.data, 'error')
                 })
         },
         showMsg(data, type) {
@@ -130,20 +175,29 @@ export default {
                 return ''
             }
         },
-        toLinke(url){
+        toLinke(url) {
             window.open(url);
         },
-        showDelSiteDialog(row, idx){
+        showDelSiteDialog(row, idx) {
             this.site = row;
             this.idx = idx;
             this.DeldialogFormVisible = true;
         },
-        hidenDelDialog(val){
+        hidenDelDialog(val) {
             this.DeldialogFormVisible = false;
         },
-        delSite(val){
+        delSite(val) {
             this.sitesData.splice(this.idx, 1);
-        }
+        },
+        showAuthDialog(row){
+            this.the_site = row;
+            this.AuthdialogFormVisible = true;
+        },
+        hidenAuthDialog() {
+            this.AuthdialogFormVisible = false;
+            this.auth = '';
+            this.phrase = '';
+        },
     },
     components: {
         MyNewSite,

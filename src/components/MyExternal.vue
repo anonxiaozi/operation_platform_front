@@ -27,7 +27,7 @@
         </el-row>
         <el-dialog :title="external.external_name + ' 的登录信息'" :visible.sync="dialogFormVisible" center :before-close="hidenDialog" width="30%">
             <el-form @submit.native.prevent>
-                <el-form-item label="请输入口令" :label-width="formLabelWidth">
+                <el-form-item label="请输入口令" label-width="90px">
                     <el-input v-model="phrase" autocomplete="off" required show-password autofocus @keyup.enter.native="getAuth"></el-input>
                 </el-form-item>
             </el-form>
