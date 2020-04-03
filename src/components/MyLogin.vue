@@ -19,8 +19,8 @@ export default {
     data() {
         return {
             formData: {
-                username: 'root',
-                password: 'www.123.com',
+                username: '',
+                password: '',
             },
         };
     },

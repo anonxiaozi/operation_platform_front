@@ -77,7 +77,7 @@ export default {
                             message: resp.data.message,
                             type: 'success'
                         });
-                        this.newHost = this.handleHost(resp.data.host)
+                        this.$emit('to-refreshEditHost', this.handleHost(resp.data.host))
                     } else {
                         this.$notify({
                             title: '失败',
@@ -99,6 +99,7 @@ export default {
         handleHost(val){
             var obj = JSON.parse(val)[0];
             var fields = obj.fields;
+            console.log(fields)
             fields['host_addr'] = obj.pk;
             return fields;
         }

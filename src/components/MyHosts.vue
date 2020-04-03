@@ -52,7 +52,7 @@
             <el-pagination layout="total, sizes, prev, pager, next, jumper" :total="hosts.length" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[6, 9, 11, 13]" :page-size="pageSize">
             </el-pagination>
         </div>
-        <EditHost :host="host" @to-hidenEditDialog="hidenEditDialog" :dialogFormVisible="dialogFormVisible" :formLabelWidth="formLabelWidth"></EditHost>
+        <EditHost :host="host" @to-hidenEditDialog="hidenEditDialog" :dialogFormVisible="dialogFormVisible" :formLabelWidth="formLabelWidth" @to-refreshEditHost="refreshEditHost"></EditHost>
         <NewHost @to-hidenAddDialog="hidenAddDialog" :newdialogFormVisible="newdialogFormVisible" :formLabelWidth="formLabelWidth" @to-refreshHost="refreshHost"></NewHost>
     </div>
 </template>
@@ -93,9 +93,8 @@ export default {
                         this.hosts = resp.data.message;
                         this.newHosts = resp.data.message;
                         this.hostSearch = '';
-                        this.showMsg('数据已刷新', 'success')
+                        // this.showMsg('数据已刷新', 'success')
                     } else {
-                        console.log(resp.data)
                         this.showMsg(resp.data.message, 'warning')
                     }
                 })
@@ -143,12 +142,13 @@ export default {
             this.idx = idx;
             this.host = JSON.parse(JSON.stringify(row));
         },
+        refreshEditHost(host){
+            this.getHosts();
+        },
         hidenEditDialog(val) {
-            if (val.host_addr) {
-                this.hosts.splice(this.idx, 1, val);
-                this.newHosts.splice(this.idx, 1, val);
-            }
-            this.dialogFormVisible = false
+            this.dialogFormVisible = false;
+            this.idx = 0;
+            this.host = {}
         },
         showAddHostDialog() {
             this.newdialogFormVisible = true;
