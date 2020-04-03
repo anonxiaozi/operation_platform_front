@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-row>
-            <el-col :span="18" :offset="2">
+            <el-col :span="18" :offset="3">
                 <el-table ref="sitesData" :data="sitesData">
                     <el-table-column prop="site_name" label="名称" sortable width="180">
                     </el-table-column>
@@ -27,9 +27,11 @@
                     </el-table-column>
                 </el-table>
             </el-col>
-            <el-col :span="2">
-                <el-button type="success" icon="el-icon-plus" circle @click="addSite"></el-button>
+            <el-col :span="1">
                 <el-button type="success" circle icon="el-icon-refresh" @click="getSitesAgain"></el-button>
+                <br>
+                <br>
+                <el-button type="success" icon="el-icon-plus" circle @click="addSite"></el-button>
             </el-col>
         </el-row>
         <MyNewSite @to-hidenAddDialog="hidenAddDialog" :newdialogFormVisible="newdialogFormVisible" :formLabelWidth="formLabelWidth" @to-appendSite="appendSite"></MyNewSite>
