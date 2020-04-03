@@ -21,6 +21,9 @@
                     </el-table-column>
                 </el-table>
             </el-col>
+            <el-col :span="1">
+                <el-button type="success" circle icon="el-icon-refresh" @click="getExternalAgain"></el-button>
+            </el-col>
         </el-row>
         <el-dialog :title="external.external_name + ' 的登录信息'" :visible.sync="dialogFormVisible" center :before-close="hidenDialog" width="30%">
             <el-form @submit.native.prevent>
@@ -68,6 +71,9 @@ export default {
                 .catch(err => {
                     this.showNotify(resp.status, resp.data, 'error')
                 })
+        },
+        getExternalAgain(){
+            this.getExternal()
         },
         getAuth() {
             this.$http({
