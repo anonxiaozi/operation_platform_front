@@ -38,7 +38,7 @@ export default {
         term.loadAddon(webLinksAddon);
         term.loadAddon(searchAddon);
         term.open(this.$refs.terminal);
-        const webSocket = new WebSocket('ws://10.15.101.58/connect/' + host_addr + '/');
+        const webSocket = new WebSocket('ws://' + this.remoteAddr + '/connect/' + host_addr + '/');
         const attachAddon = new AttachAddon(webSocket);
         term.loadAddon(attachAddon);
         webSocket.onopen = () => {
@@ -58,7 +58,7 @@ export default {
     },
     methods: {
         TermSize(term, ws, height, width) {
-            term.resize(width-2, height+2)
+            term.resize(width - 2, height + 2)
             ws.send('bloke_term_resize,height=' + term.rows + 'width=' + term.cols + ';')
         },
         showDialog() {

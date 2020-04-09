@@ -8,7 +8,7 @@ import animated from 'animate.css'
 import VueCookies from 'vue-cookies'
 
 Vue.config.productionTip = false
-Vue.prototype.remoteAddr = '10.15.101.58'
+Vue.prototype.remoteAddr = '10.15.101.58:8088'
 axios.defaults.withCredentials = true
 Vue.use(animated)
 Vue.use(VueCookies)
