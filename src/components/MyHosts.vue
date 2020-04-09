@@ -75,7 +75,7 @@ export default {
             activeName: 'ipRecord',
             dialogTerminalVisible: false,
             currentPage: 1,
-            pageSize: 9,
+            pageSize: 11,
             hostSearch: '',
         }
     },
