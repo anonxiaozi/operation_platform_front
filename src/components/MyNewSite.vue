@@ -14,6 +14,9 @@
                 <el-form-item label="网站描述" :label-width="formLabelWidth">
                     <el-input v-model="newSite.site_remarks" type="textarea"></el-input>
                 </el-form-item>
+                <el-form-item label="登录信息" :label-width="formLabelWidth">
+                    <el-input v-model="newSite.auth"></el-input>
+                </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="hidenDialog">取 消</el-button>
